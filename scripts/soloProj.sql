@@ -24,21 +24,21 @@ AND star_rating > 4;
 SELECT count(*) as review_count
 FROM data_analyst_jobs
 WHERE review_count > 499
-AND review_count < 1000;
+AND review_count <= 1000;
 
 -- 6:  NE highest rating
-SELECT location AS state, AVG(star_rating) AS avg_rating
+SELECT location AS state, ROUND(AVG(star_rating),2) AS avg_rating
 FROM data_analyst_jobs
-WHERE star_rating <> 0
+WHERE location IS NOT NULL AND star_rating IS NOT NULL
 GROUP BY location
 ORDER BY avg_rating DESC;
 
 -- 7: 1793
-SELECT DISTINCT COUNT(title) as unique_job_titles
+SELECT COUNT(DISTINCT title) as unique_job_titles
 FROM data_analyst_jobs;
 
 -- 8: 376
-SELECT DISTINCT COUNT(title) as ca_job_title_count
+SELECT COUNT(DISTINCT title) as ca_job_title_count
 FROM data_analyst_jobs
 WHERE location = 'CA';
 
@@ -58,7 +58,7 @@ ORDER BY avg_star_rating DESC
 LIMIT 1;
 
 -- 11:  1669
-SELECT COUNT(*) as no_of_jobs
+SELECT COUNT(DISTINCT title) as no_of_jobs
 FROM data_analyst_jobs
 WHERE title ILIKE '%Analyst%';
 
@@ -72,8 +72,8 @@ AND title NOT ILIKE '%Analytics%';
 SELECT domain, COUNT(*) as hard_to_fill
 FROM data_analyst_jobs
 WHERE skill ILIKE '%SQL%'
-AND days_since_posting > 20
-AND domain NOT ILIKE '[null]'
+AND days_since_posting > 21
+AND domain IS NOT NULL
 GROUP BY domain
 ORDER BY hard_to_fill DESC
 LIMIT 4;
